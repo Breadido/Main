@@ -1031,4 +1031,4 @@ for _, player in pairs(Services.Players:GetPlayers()) do
     end
 end
 
-return MainESP
+return MainESP, CullingSystem
