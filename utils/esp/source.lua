@@ -1,4 +1,8 @@
 if not game:IsLoaded() or not game.Loaded then game.Loaded:Wait() end
+getgenv().test = 45
+if game.PlaceId == 606849621 then
+    print("this is jailbreak")
+end
 
 local Camera = workspace.CurrentCamera
 local LocalPlayer = game:GetService("Players").LocalPlayer
@@ -36,6 +40,7 @@ local MainESP = {
 		TracerThickness = 0,
 		DirectionThickness = 0,
 		SkeletonThickness = 0,
+        Bounties = false, -- jb only
 	},
 	ObjectOptions = {
 		Enabled = false,
@@ -529,6 +534,10 @@ function MainESP:CreateESP(player, object, customName, customPredicate)
             Connections = {},
 			_BoxDimensions = { width = 0, height = 0, x = 0, y = 0 },
         }
+
+        if game.PlaceId == 606849621 then
+            PlayerESP.Bounties = self.CreateText()
+        end
         
         self.Container[player] = PlayerESP
         
@@ -897,6 +906,46 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                     playerESP.Name.Visible = true
                 else
                     playerESP.Name.Visible = false
+                end
+
+                -- jb bounties system (WARNING: poorly wrtitten)
+                if MainESP.Options.Bounties and onScreen and game.PlaceId == 606849621 then
+                    if not infoX then
+                        infoX = dims.x + dims.width / 2
+                    end
+
+                    local getUsernameFromDisplayName = (function(name)
+                        for i,v in next, game:GetService("Players"):GetPlayers() do
+                            if v.DisplayName == name then
+                                return v.Name
+                            end
+                        end
+                        return nil
+                    end)
+
+                    local format = (function(displayname)
+                        local uh = getUsernameFromDisplayName(displayname)
+                        if uh then
+                            local module = require(game:GetService("ReplicatedStorage").Bounty.BountyBoardService)
+                            for i,v in next, module.Bounties do
+                                if v.Name == uh then
+                                    return "Bounty: ".. tostring(v.Bounty)
+                                end
+                            end
+                        end
+                        return "0"
+                    end)
+                    
+                    playerESP.Bounties.Text = format(player.DisplayName)
+                    playerESP.Bounties.Position = Vector2.new(infoX, topPos.Y - getgenv().test)
+                    playerESP.Bounties.Color = color
+                    playerESP.Bounties.Font = MainESP.Options.Font
+                    playerESP.Bounties.Size = MainESP.Options.FontSize
+                    playerESP.Bounties.Outline = MainESP.Options.TextOutline
+                    playerESP.Bounties.OutlineColor = Color3.fromRGB(0, 0, 0)
+                    playerESP.Bounties.Visible = true
+                else
+                    playerESP.Bounties.Visible = false
                 end
                 
                 -- Distance ESP (full/medium detail)
