@@ -1,5 +1,5 @@
 if not game:IsLoaded() or not game.Loaded then game.Loaded:Wait() end
-getgenv().test = 45
+getgenv().test = 35
 if game.PlaceId == 606849621 then
     print("this is jailbreak")
 end
