@@ -938,7 +938,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                     
                     playerESP.Bounties.Text = format(player.DisplayName)
                     playerESP.Bounties.Position = Vector2.new(infoX, topPos.Y - getgenv().test)
-                    playerESP.Bounties.Color = color
+                    playerESP.Bounties.Color = Color3.fromRGB(255, 255, 0)
                     playerESP.Bounties.Font = MainESP.Options.Font
                     playerESP.Bounties.Size = MainESP.Options.FontSize
                     playerESP.Bounties.Outline = MainESP.Options.TextOutline
