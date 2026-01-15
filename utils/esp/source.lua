@@ -933,7 +933,7 @@ local globalRenderConnection = Services.RunService.RenderStepped:Connect(functio
                                 end
                             end
                         end
-                        return "0"
+                        return ""
                     end)
                     
                     playerESP.Bounties.Text = format(player.DisplayName)
